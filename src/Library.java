@@ -18,15 +18,15 @@ public class Library {
                 Book book = (Book) item;
                 if (book.isAvailable()) {
                     book.setAvailable(false);
-                    System.out.println("You have successfully borrowed \"" + book.getName() + "\".");
+                    System.out.println("You have successfully borrowed '" + book.getName() + "'");
                     return true;
                 } else {
-                    System.out.println("Sorry, the book \"" + book.getName() + "\" is not available.");
+                    System.out.println("Sorry, the book '" + book.getName() + "' is not available.");
                     return false;
                 }
             }
         }
-        System.out.println("Sorry, the book with ID \"" + id + "\" is not found.");
+        System.out.println("Sorry, the book with ID '" + id + "' is not found.");
         return false;
     }
 
@@ -36,20 +36,20 @@ public class Library {
                 Book book = (Book) item;
                 if (!book.isAvailable()) {
                     book.setAvailable(true);
-                    System.out.println("You have successfully returned \"" + book.getName() + "\".");
+                    System.out.println("You have successfully returned '" + book.getName() + "'");
                     return true;
                 } else {
-                    System.out.println("The book \"" + book.getName() + "\" was not borrowed.");
+                    System.out.println("The book '" + book.getName() + "' was not borrowed");
                     return false;
                 }
             }
         }
-        System.out.println("Sorry, the book with ID \"" + id + "\" is not found.");
+        System.out.println("Sorry, the book with ID '" + id + "' is not found.Try again later and buy our newest pass");
         return false;
     }
 
     public void displayAvailableBooks() {
-        System.out.println("Available books:");
+        System.out.println("Available books: ");
         boolean anyAvailable = false;
         for (LibraryItem item : items) {
             if (item instanceof Book) {
@@ -61,7 +61,7 @@ public class Library {
             }
         }
         if (!anyAvailable) {
-            System.out.println("No books are currently available.");
+            System.out.println("No books are currently available.Sorry");
         }
     }
 
