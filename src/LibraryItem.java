@@ -2,7 +2,7 @@ public abstract class LibraryItem {
     private String name;
     private String id;
 
-    public LibraryItem(String name, String id) {
+    public LibraryItem(int i, String name, String id) {
         this.name = name;
         this.id = id;
     }
@@ -11,8 +11,8 @@ public abstract class LibraryItem {
         return name;
     }
 
-    public String getId() {
-        return id;
+    public int getId() {
+        return Integer.parseInt(id);
     }
 
     public abstract void displayDetails();
