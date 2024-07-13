@@ -1,74 +1,62 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Library {
-    private List<LibraryItem> items;
-
-    public Library() {
-        this.items = new ArrayList<>();
+    // Add a new book
+    public void addBook(Book book) {
+        String query = "INSERT INTO books (id, title, author) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, book.getId());
+            stmt.setString(2, book.getTitle());
+            stmt.setString(3, book.getAuthor());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void addItem(LibraryItem item) {
-        items.add(item);
-    }
-
-    public boolean borrowBook(String id) {
-        for (LibraryItem item : items) {
-            if (item instanceof Book && item.getId().equalsIgnoreCase(id)) {
-                Book book = (Book) item;
-                if (book.isAvailable()) {
-                    book.setAvailable(false);
-                    System.out.println("You have successfully borrowed '" + book.getName() + "'");
-                    return true;
-                } else {
-                    System.out.println("Sorry, the book '" + book.getName() + "' is not available.");
-                    return false;
-                }
+    // Read book by ID
+    public Book getBook(int id) {
+        String query = "SELECT * FROM books WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new Book(rs.getInt("id"), rs.getString("title"), rs.getString("author"));
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        System.out.println("Sorry, the book with ID '" + id + "' is not found.");
-        return false;
+        return null;
     }
 
-    public boolean returnBook(String id) {
-        for (LibraryItem item : items) {
-            if (item instanceof Book && item.getId().equalsIgnoreCase(id)) {
-                Book book = (Book) item;
-                if (!book.isAvailable()) {
-                    book.setAvailable(true);
-                    System.out.println("You have successfully returned '" + book.getName() + "'");
-                    return true;
-                } else {
-                    System.out.println("The book '" + book.getName() + "' was not borrowed");
-                    return false;
-                }
-            }
-        }
-        System.out.println("Sorry, the book with ID '" + id + "' is not found.Try again later and buy our newest pass");
-        return false;
-    }
-
-    public void displayAvailableBooks() {
-        System.out.println("Available books: ");
-        boolean anyAvailable = false;
-        for (LibraryItem item : items) {
-            if (item instanceof Book) {
-                Book book = (Book) item;
-                if (book.isAvailable()) {
-                    System.out.println("ID: " + book.getId() + ", Title: " + book.getName() + ", Author: " + book.getAuthor());
-                    anyAvailable = true;
-                }
-            }
-        }
-        if (!anyAvailable) {
-            System.out.println("No books are currently available.Sorry");
+    // Update a book
+    public void updateBook(Book book) {
+        String query = "UPDATE books SET title = ?, author = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, book.getTitle());
+            stmt.setString(2, book.getAuthor());
+            stmt.setInt(3, book.getId());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public void displayAllItems() {
-        for (LibraryItem item : items) {
-            item.displayDetails();
-            System.out.println();
+    // Delete a book
+    public void deleteBook(int id) {
+        String query = "DELETE FROM books WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
