@@ -2,24 +2,21 @@ public class Main {
     public static void main(String[] args) {
         Library library = new Library();
 
-        // Adding books and magazines to the library , so we can read or else you get what what
-        library.addItem(new Book("The Great Gatsby", "B001", "F. Scott Fitzgerald"));
-        library.addItem(new Book("1984", "B002", "George Orwell"));
-        library.addItem(new Book("Menin atim kozha", "C003", "Berdibek Sokpakbayev"));
-        library.addItem(new Magazine("National Geographic", "M001", "June 2023"));
-        library.addItem(new Magazine("Time", "M002", "July 2023"));
+        // Add a new book
+        Book book = new Book(1, "1984", "George Orwell");
+        library.addBook(book);
 
-        library.displayAllItems();
+        // Retrieve and display the book
+        Book retrievedBook = library.getBook(1);
+        if (retrievedBook != null) {
+            System.out.println("Retrieved Book: " + retrievedBook.getTitle() + " by " + retrievedBook.getAuthor());
+        }
 
-        library.displayAvailableBooks();
+        // Update the book
+        book.setTitle("Nineteen Eighty-Four");
+        library.updateBook(book);
 
-        library.borrowBook("B002");
-
-        library.borrowBook("B002");
-
-        library.returnBook("B002");
-
-        library.displayAvailableBooks();
+        // Delete the book
+        library.deleteBook(1);
     }
 }
-
