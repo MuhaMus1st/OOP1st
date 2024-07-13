@@ -2,7 +2,7 @@ public class Magazine extends LibraryItem {
     private String issueNumber;
 
     public Magazine(String name, String id, String issueNumber) {
-        super(name, id);
+        super(Integer.parseInt(id), name, issueNumber);
         this.issueNumber = issueNumber;
     }
 
